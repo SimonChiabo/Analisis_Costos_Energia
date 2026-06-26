@@ -1,0 +1,77 @@
+import pandas as pd
+import numpy as np
+
+# Configuración inicial
+np.random.seed(42)  # Para reproducibilidad
+num_apartamentos = 200
+meses_historico = 36
+meses_optimizado = 12
+
+# Perfil de estacionalidad mensual (1 = Enero, 12 = Diciembre)
+# Valores entre 0 (verano) y 1 (pleno invierno)
+estacionalidad_base = np.array([1.0, 0.9, 0.7, 0.4, 0.1, 0.0, 0.0, 0.0, 0.1, 0.4, 0.8, 1.0])
+consumo_promedio_invierno = 250
+
+# Definimos invierno como los meses con estacionalidad alta (Ene, Feb, Mar, Nov, Dic)
+es_invierno = estacionalidad_base >= 0.7
+
+def generar_datos(num_meses, offset_mes, reduccion_base, prob_anomalia):
+    datos = []
+    
+    for apt_id in range(1, num_apartamentos + 1):
+        fila = {'ID_Apto': f'Apto_{apt_id:03d}'}
+        
+        for m in range(1, num_meses + 1):
+            mes_absoluto = m + offset_mes
+            mes_del_anio = (mes_absoluto - 1) % 12
+            
+            # Consumo base considerando estacionalidad y algo de ruido aleatorio (+/- 10%)
+            factor_est = estacionalidad_base[mes_del_anio]
+            consumo_base = consumo_promedio_invierno * factor_est * np.random.uniform(0.9, 1.1)
+            
+            # Reducción por eficiencia (tarjetas)
+            consumo_base *= (1 - reduccion_base)
+            
+            # Aplicar anomalía de derroche
+            if es_invierno[mes_del_anio] and np.random.rand() < prob_anomalia:
+                # Pico entre 50% y 80% extra sobre el promedio de invierno esperado
+                promedio_esperado = consumo_promedio_invierno * (1 - reduccion_base)
+                pico = promedio_esperado * np.random.uniform(0.5, 0.8)
+                consumo_final = consumo_base + pico
+            else:
+                consumo_final = consumo_base
+            
+            # Limpiar datos: no puede haber negativos
+            consumo_final = max(0, round(consumo_final, 2))
+            
+            fila[f'Mes_{mes_absoluto}'] = consumo_final
+            
+        datos.append(fila)
+        
+    return pd.DataFrame(datos)
+
+# 1. Generar Histórico (36 meses)
+# Reducción 0% y 15% de probabilidad de anomalía en meses de invierno
+df_historico = generar_datos(
+    num_meses=meses_historico, 
+    offset_mes=0, 
+    reduccion_base=0.0, 
+    prob_anomalia=0.15
+)
+
+# 2. Generar Optimizado (12 meses posteriores)
+# Reducción 20% y 2.5% de probabilidad de anomalía en meses de invierno
+df_optimizado = generar_datos(
+    num_meses=meses_optimizado, 
+    offset_mes=meses_historico, 
+    reduccion_base=0.20, 
+    prob_anomalia=0.025
+)
+
+# Exportar a CSV
+df_historico.to_csv('consumo_historico.csv', index=False)
+df_optimizado.to_csv('consumo_optimizado.csv', index=False)
+
+print("Generación completada con éxito.")
+print(f"-> 'consumo_historico.csv' ({df_historico.shape[0]} filas, {df_historico.shape[1]} columnas)")
+print(f"-> 'consumo_optimizado.csv' ({df_optimizado.shape[0]} filas, {df_optimizado.shape[1]} columnas)")
