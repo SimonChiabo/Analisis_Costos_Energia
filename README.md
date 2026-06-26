@@ -6,13 +6,13 @@
 
 Este proyecto presenta un caso práctico de análisis de datos y modelado financiero basado en una experiencia profesional real. El objetivo central fue evaluar la viabilidad y el impacto de una medida de eficiencia energética en un complejo de 200 apartamentos turísticos situados en una zona de montaña.
 
-El repositorio contiene el código necesario para simular perfiles de consumo de gasoil con alta estacionalidad. En la operación real, tras instalar los interruptores de tarjeta se observó una reducción aproximada del 20% en el consumo de combustible. Ese valor es el que ancla la simulación. El script analítico procesa estos datos simulados para extraer métricas financieras determinantes para la toma de decisiones gerenciales.
+El repositorio contiene el código necesario para simular perfiles de consumo de gasoil con alta estacionalidad. El script analítico procesa estos datos simulados para extraer métricas financieras determinantes para la toma de decisiones gerenciales.
 
 ## El Problema de Negocio
 
 El complejo turístico experimentaba sobrecostos operativos severos durante la temporada de invierno. Una auditoría preliminar reveló que un porcentaje significativo de huéspedes dejaba los sistemas de calefacción encendidos a máxima capacidad mientras se encontraban fuera del apartamento durante el día.
 
-Para mitigar este derroche, se propuso la instalación de **interruptores de tarjeta** en cada unidad. Esto garantizaría el corte automático del sistema de climatización en ausencia de los ocupantes, manteniendo un consumo residual mínimo por aquellos usuarios que lograsen evadir el sistema (por ejemplo, solicitando una segunda tarjeta).
+Para mitigar este derroche, se propuso la instalación de **interruptores de tarjeta** en cada unidad. Esto garantizaría el corte automático del sistema de climatización en ausencia de los ocupantes, manteniendo un consumo residual mínimo por aquellos usuarios que lograsen evadir el sistema (por ejemplo, solicitando una segunda tarjeta). En la operación real, tras instalar los interruptores de tarjeta se observó una reducción aproximada del 20% en el consumo de combustible. Ese valor es el que ancla la simulación.
 
 ### Parámetros Financieros Base
 - **Precio del gasoil**: 1.15 € / litro.
@@ -36,11 +36,11 @@ Las siguientes cifras son el output del modelo financiero aplicado sobre los dat
 
 El modelo analítico demuestra que la corrección del comportamiento de derroche, incluso asumiendo un margen de error (usuarios que puentean el sistema), genera un caso de negocio extraordinariamente rentable:
 
-* **Reducción Neta de Consumo**: ~25.5%
+* **Reducción Neta de Consumo**: ~20.3%
 * **CAPEX Total**: 12,000 €
-* **Ahorro Operativo Anual (OPEX)**: ~86,458 €
-* **Retorno de Inversión (ROI)**: 620.49%
-* **Periodo de Recuperación (Payback)**: 1.7 meses
+* **Ahorro Operativo Anual (OPEX)**: ~80,558 €
+* **Retorno de Inversión (ROI)**: 571%
+* **Periodo de Recuperación (Payback)**: 1.8 meses
 
 ## Análisis de Sensibilidad
 
@@ -48,9 +48,9 @@ El ahorro real (~20%) es el supuesto central del modelo. Se evalúa cómo se com
 
 | Escenario de ahorro | Ahorro anual (€) | ROI | Payback |
 |---------------------|------------------|-----|---------|
-| Conservador (15%)   | ~ 50,852 €       | 324%| 2.8 meses |
-| Base (20%)          | ~ 67,803 €       | 465%| 2.1 meses |
-| Optimista (25%)     | ~ 84,754 €       | 606%| 1.7 meses |
+| Conservador (15%)   | ~ 59,650 €       | 397%| 2.4 meses |
+| Base (20%)          | ~ 79,533 €       | 563%| 1.8 meses |
+| Optimista (25%)     | ~ 99,416 €       | 728%| 1.4 meses |
 
 Incluso en el escenario conservador, el payback se mantiene por debajo de unos pocos meses, lo que confirma la robustez del caso de negocio.
 

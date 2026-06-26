@@ -34,9 +34,8 @@ def generar_datos(num_meses, offset_mes, reduccion_base, prob_anomalia):
             
             # Aplicar anomalía de derroche
             if es_invierno[mes_del_anio] and np.random.rand() < prob_anomalia:
-                # Pico entre 50% y 80% extra sobre el promedio de invierno esperado
-                promedio_esperado = consumo_promedio_invierno * (1 - reduccion_base)
-                pico = promedio_esperado * np.random.uniform(0.5, 0.8)
+                # Pico entre 80% y 120% extra sobre el consumo promedio de invierno
+                pico = consumo_promedio_invierno * np.random.uniform(0.8, 1.2)
                 consumo_final = consumo_base + pico
             else:
                 consumo_final = consumo_base
@@ -51,20 +50,20 @@ def generar_datos(num_meses, offset_mes, reduccion_base, prob_anomalia):
     return pd.DataFrame(datos)
 
 # 1. Generar Histórico (36 meses)
-# Reducción 0% y 15% de probabilidad de anomalía en meses de invierno
+# Reducción 0% y 30% de probabilidad de anomalía en meses de invierno
 df_historico = generar_datos(
     num_meses=meses_historico, 
     offset_mes=0, 
     reduccion_base=0.0, 
-    prob_anomalia=0.15
+    prob_anomalia=0.30
 )
 
 # 2. Generar Optimizado (12 meses posteriores)
-# Reducción 20% y 2.5% de probabilidad de anomalía en meses de invierno
+# Reducción 0% (el ahorro viene del corte de anomalías) y 2.5% de probabilidad de anomalía residual
 df_optimizado = generar_datos(
     num_meses=meses_optimizado, 
     offset_mes=meses_historico, 
-    reduccion_base=0.20, 
+    reduccion_base=0.0, 
     prob_anomalia=0.025
 )
 
