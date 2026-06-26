@@ -8,9 +8,15 @@ capex_por_apto = 60   # €
 num_apartamentos = 200
 capex_total = capex_por_apto * num_apartamentos
 
+import os
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+data_dir = os.path.join(base_dir, 'data')
+assets_dir = os.path.join(base_dir, 'assets')
+os.makedirs(assets_dir, exist_ok=True)
+
 # 2. Cargar datos
-df_historico = pd.read_csv('consumo_historico.csv')
-df_optimizado = pd.read_csv('consumo_optimizado.csv')
+df_historico = pd.read_csv(os.path.join(data_dir, 'consumo_historico.csv'))
+df_optimizado = pd.read_csv(os.path.join(data_dir, 'consumo_optimizado.csv'))
 
 # Filtrar solo las columnas numéricas de los meses
 cols_historico = [col for col in df_historico.columns if col.startswith('Mes_')]
@@ -96,6 +102,6 @@ plt.text(1, y_max * 0.90, texto_metricas, fontsize=12, fontweight='bold', color=
 plt.tight_layout()
 
 # Guardar en alta resolución
-nombre_grafico = 'analisis_financiero_consumo.png'
+nombre_grafico = os.path.join(assets_dir, 'analisis_financiero_consumo.png')
 plt.savefig(nombre_grafico, dpi=300)
-print(f"Gráfico de alta resolución guardado como '{nombre_grafico}'")
+print(f"Gráfico de alta resolución guardado en '{nombre_grafico}'")

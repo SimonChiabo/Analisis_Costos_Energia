@@ -68,10 +68,20 @@ df_optimizado = generar_datos(
     prob_anomalia=0.025
 )
 
+import os
+
+# Obtener ruta absoluta del directorio del proyecto
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+data_dir = os.path.join(base_dir, 'data')
+os.makedirs(data_dir, exist_ok=True)
+
 # Exportar a CSV
-df_historico.to_csv('consumo_historico.csv', index=False)
-df_optimizado.to_csv('consumo_optimizado.csv', index=False)
+path_historico = os.path.join(data_dir, 'consumo_historico.csv')
+path_optimizado = os.path.join(data_dir, 'consumo_optimizado.csv')
+
+df_historico.to_csv(path_historico, index=False)
+df_optimizado.to_csv(path_optimizado, index=False)
 
 print("Generación completada con éxito.")
-print(f"-> 'consumo_historico.csv' ({df_historico.shape[0]} filas, {df_historico.shape[1]} columnas)")
-print(f"-> 'consumo_optimizado.csv' ({df_optimizado.shape[0]} filas, {df_optimizado.shape[1]} columnas)")
+print(f"-> 'data/consumo_historico.csv' ({df_historico.shape[0]} filas, {df_historico.shape[1]} columnas)")
+print(f"-> 'data/consumo_optimizado.csv' ({df_optimizado.shape[0]} filas, {df_optimizado.shape[1]} columnas)")
