@@ -54,11 +54,19 @@ El ahorro real (~20%) es el supuesto central del modelo. Se evalúa cómo se com
 
 Incluso en el escenario conservador, el payback se mantiene por debajo de unos pocos meses, lo que confirma la robustez del caso de negocio.
 
-### Impacto Operativo
+### Visualizaciones y Análisis de Impacto
 
-![Evolución del Consumo](assets/analisis_financiero_consumo.png)
+El proyecto incluye visualizaciones avanzadas para comunicar tanto el impacto financiero macro como el control estadístico micro:
 
-*La gráfica evidencia el drástico punto de inflexión en los picos de invierno tras la implementación tecnológica en el mes 36, normalizando la curva de demanda.*
+#### 1. Impacto Financiero (Waterfall Chart)
+![Gráfico de Cascada](assets/01_grafico_cascada.png)
+*Resumen del caso de negocio: el volumen de consumo estructural se mantiene, mientras que el derroche se elimina casi por completo tras la intervención.*
+
+#### 2. Control de Varianza en Invierno (Box Plot)
+![Box Plot](assets/02_grafico_boxplot.png)
+*Análisis micro: Al aislar los meses de invierno, se observa la drástica reducción de la varianza. La intervención eliminó los "outliers" (apartamentos con picos de derroche), estandarizando el comportamiento.*
+
+*(Ver carpeta `assets/` para gráficos adicionales generados por el script `src/generar_visualizaciones_avanzadas.py`)*
 
 ## Tecnologías Utilizadas
 
